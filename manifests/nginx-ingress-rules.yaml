@@ -1,0 +1,20 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nginx-ingress-rules
+  labels:
+    author: Abhishek-Balaji
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-targets: /sampleapp/
+spec:
+  ingressClassName: nginx
+  rules:
+    - http:
+        paths:
+          - path: /home
+            pathType: Prefix
+            backend:
+              service:
+                name: cluster-svc
+                port: 
+                  number: 80
