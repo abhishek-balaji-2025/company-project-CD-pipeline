@@ -20,7 +20,7 @@ pipeline {
         stage("kubernetes-cluster-access") {
             steps {
                 withCredentials([file(credentialsId: 'jenkins-kubeconfig', variable: 'KUBECONFIG')]) {
-                   sh "kubectl --kubeconfig=$KUBECONFIG get pods"
+                    sh "kubectl --kubeconfig=$KUBECONFIG get pods"
                 }
             }
         }
@@ -51,6 +51,15 @@ pipeline {
                 sh 'echo "checking rollout status"'
                 sh 'kubectl rollout status deployment/deploy-webpage'
             }
+        }
+    }
+
+    post {
+        success {
+            echo 'Deployment succeeded!'
+        }
+        failure {
+            echo 'Deployment failed.'
         }
     }
 }
