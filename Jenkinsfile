@@ -20,7 +20,7 @@ pipeline {
         stage("kubernetes-cluster-access") {
             steps {
                 withCredentials([file(credentialsId: 'jenkins-kubeconfig', variable: 'KUBECONFIG')]) {
-                    sh 'kubectl --kubeconfig=$KUBECONFIG get pods'
+                    
                 }
             }
         }
