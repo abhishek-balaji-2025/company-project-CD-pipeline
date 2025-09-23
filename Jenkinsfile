@@ -6,7 +6,7 @@ pipeline {
     stages {
         stage("checkout") {
             steps {
-                checkout changelog: false, poll: false, scm: scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/abhishek-balaji-2025/company-project-CD-pipeline.git']])
+                git branch: 'main', url: 'https://github.com/abhishek-balaji-2025/company-project-CD-pipeline.git'
             }
         }
 
@@ -17,9 +17,11 @@ pipeline {
             }
         }
 
-        stage("AWS-kubernetes-cluster-access") {
+        stage("kubernetes-cluster-access") {
             steps {
-                sh 'aws eks update-kubeconfig --region us-east-1 --name k8-cluster'
+                withCredentials([file(credentialsId: 'jenkins-kubeconfig', variable: 'KUBECONFIG')]) {
+                   sh "kubectl --kubeconfig=$KUBECONFIG get pods"
+                }
             }
         }
 
@@ -37,7 +39,7 @@ pipeline {
             }
         }
 
-        stage("kubctl-deploy-microservice") {
+        stage("kubectl-deploy-microservice") {
             steps {
                 sh 'echo "deploying microservice from manifest files"'
                 sh 'kubectl apply -f manifests/deploy-simple-microservice.yaml'
