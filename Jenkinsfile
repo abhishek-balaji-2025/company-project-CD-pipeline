@@ -28,7 +28,8 @@ pipeline {
         stage("deploy-nginx-ingress-controller") {
             steps {
                 sh 'echo "deploying nginx ingress controller"'
-                sh 'kubectl apply --validate=false -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.3.0/deploy/static/provider/baremetal/deploy.yaml'
+                sh 'wget https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.3.0/deploy/static/provider/baremetal/deploy.yaml'
+                sh 'kubectl apply --validate=false -f deploy.yaml'
             }
         }
 
